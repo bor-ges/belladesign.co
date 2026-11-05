@@ -1,0 +1,2 @@
+Salve aqui as capas do Behance (ou rode: python3 fetch-covers.py na pasta do site).
+Nomes: zago, revista, rayane, rpg, prata, guara, solaris, sonhar, netinho (jpg, png, webp ou jpeg).

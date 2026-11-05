@@ -1,0 +1,789 @@
+<title>Bella Design</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Bella Design: design com 10 anos de experiência em branding, identidade visual, design editorial e design político e corporativo.">
+<meta property="og:title" content="Bella Design · Designer">
+<meta property="og:description" content="Branding, identidade visual, editorial e design político. 10 anos de portfólio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  /* Tailwind: as cores apontam para os tokens CSS, então claro/escuro funcionam sem trocar classes. */
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: 'var(--bg)', surface: 'var(--surface)', fg: 'var(--fg)', muted: 'var(--muted)',
+          line: 'var(--line)', wine: '#4F1010', forest: '#11261C', ink: 'var(--wine-ink)'
+        },
+        fontFamily: {
+          display: ['Anton', 'Impact', 'Arial Narrow', 'sans-serif'],
+          serif: ['Instrument Serif', 'Georgia', 'serif'],
+          sans: ['DM Sans', 'system-ui', 'sans-serif'],
+          mono: ['DM Mono', 'ui-monospace', 'monospace']
+        }
+      }
+    }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+  /* Conceito: vinho (#4F1010) abre a página, verde (#11261C) fecha; o miolo é neutro com leve viés verde.
+     Nome gigante em fonte condensada que reage ao cursor, itálico serifado como contraponto, mono para rótulos. */
+  :root {
+    --bg: #ECEEE9;
+    --surface: #E1E5DE;
+    --fg: #11261C;
+    --muted: #475A50;
+    --line: rgba(17, 38, 28, .22);
+    --wine-ink: #4F1010;
+    --wine: #4F1010;
+    --forest: #11261C;
+    --on-wine: #F3ECE6;
+    --on-forest: #E9EEE9;
+    --rose: #E8A6A6;
+    --orb: rgba(79, 16, 16, .16);
+    --orb-2: rgba(17, 38, 28, .14);
+    --f-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+    --f-serif: 'Instrument Serif', Georgia, serif;
+    --f-body: 'DM Sans', system-ui, sans-serif;
+    --f-mono: 'DM Mono', ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0B1510; --surface: #11261C; --fg: #E9EEE9; --muted: #A3B3A9;
+      --line: rgba(233, 238, 233, .22); --wine-ink: #E8A6A6;
+      --orb: rgba(160, 52, 52, .30); --orb-2: rgba(60, 130, 95, .22); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B1510; --surface: #11261C; --fg: #E9EEE9; --muted: #A3B3A9;
+    --line: rgba(233, 238, 233, .22); --wine-ink: #E8A6A6;
+    --orb: rgba(160, 52, 52, .30); --orb-2: rgba(60, 130, 95, .22); color-scheme: dark;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--f-body); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  ::selection { background: var(--wine); color: var(--on-wine); }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 2px; }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 1680px; margin-left: auto; margin-right: auto;
+    padding-left: max(clamp(16px, 4vw, 48px), env(safe-area-inset-left, 0px));
+    padding-right: max(clamp(16px, 4vw, 48px), env(safe-area-inset-right, 0px));
+  }
+  .sec { position: relative; overflow: hidden; }
+  .band-wine { background: var(--wine); color: var(--on-wine); }
+  .band-forest { background: var(--forest); color: var(--on-forest); }
+
+  .eyebrow { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .16em; }
+  .h-display { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: .92; text-wrap: balance; }
+  .serif em { font-style: italic; }
+  .ink { color: var(--wine-ink); }
+  .muted { color: var(--muted); }
+
+  /* ===== Nome reativo ao cursor (hero e rodapé usam o mesmo componente) ===== */
+  .rname {
+    --base: var(--on-wine); --hl: var(--rose);
+    font-family: var(--f-display); font-weight: 400; text-transform: uppercase;
+    font-size: min(14.4vw, 262px); line-height: .92; letter-spacing: -.01em;
+    white-space: nowrap; margin: 0; user-select: none; transform-origin: 50% 60%; will-change: transform;
+  }
+  .foot-name { --base: var(--on-forest); }
+  .rname .ch { display: inline-block; transform-origin: 50% 100%; will-change: transform; }
+  .rname .sp { width: .22em; }
+  .rname .ci {
+    display: inline-block;
+    color: var(--base);
+    color: color-mix(in srgb, var(--hl) calc(var(--p, 0) * 100%), var(--base));
+  }
+
+  /* ===== Fotos ===== */
+  .photo { position: relative; overflow: hidden; background: var(--surface); }
+  .photo img { position: absolute; left: 0; top: -8%; width: 100%; height: 116%; object-fit: cover; will-change: transform; display: block; }
+  .frame-note { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  .polaroid { position: absolute; box-shadow: 0 18px 40px rgba(0, 0, 0, .35); }
+
+  /* ===== Elementos flutuantes ===== */
+  .fx { position: absolute; pointer-events: none; z-index: 0; }
+  .fx > i { display: block; width: 100%; height: 100%; animation: float var(--d, 14s) ease-in-out infinite alternate; will-change: transform; }
+  @keyframes float { from { transform: translate3d(0, 0, 0) rotate(0deg); } to { transform: translate3d(18px, -26px, 0) rotate(8deg); } }
+  .orb i { border-radius: 50%; filter: blur(36px); }
+  .orb-rose i { background: radial-gradient(circle, rgba(226, 120, 110, .55), rgba(226, 120, 110, 0) 68%); }
+  .orb-deep i { background: radial-gradient(circle, rgba(8, 20, 14, .7), rgba(8, 20, 14, 0) 68%); }
+  .orb-wine i { background: radial-gradient(circle, var(--orb), transparent 68%); }
+  .orb-green i { background: radial-gradient(circle, var(--orb-2), transparent 68%); }
+  .orb-moss i { background: radial-gradient(circle, rgba(60, 130, 95, .38), rgba(60, 130, 95, 0) 68%); }
+  .ring i { border: 1.5px solid currentColor; border-radius: 50%; opacity: .4; }
+  .blob i { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%; background: var(--blob, var(--wine)); opacity: .92; }
+  .spark i { font-style: normal; display: grid; place-items: center; font-size: 2rem; line-height: 1; opacity: .7; }
+
+  /* ===== Botões ===== */
+  .btn {
+    display: inline-flex; align-items: center; gap: .6rem; padding: .95rem 1.5rem; border-radius: 999px;
+    font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+    transition: transform .25s ease, background-color .25s ease, color .25s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-light { background: var(--on-wine); color: var(--wine); }
+  .btn-light:hover { background: #fff; }
+  .btn-line { border: 1px solid currentColor; }
+  .btn-line:hover { background: var(--on-forest); color: var(--forest); }
+  .btn .arr { transition: transform .25s ease; }
+  .btn:hover .arr { transform: translate(3px, -3px); }
+
+  /* ===== Faixa ===== */
+  .marquee { overflow: hidden; border-block: 1px solid var(--line); }
+  .marquee-track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+  .marquee.js .marquee-track { animation: none; }
+  .marquee-track span { white-space: nowrap; padding: 1.1rem 0; }
+  .marquee-track i { font-style: normal; color: var(--wine-ink); padding: 0 1.4rem; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ===== Especialidades ===== */
+  .row { border-top: 1px solid var(--line); transition: background-color .35s ease, color .35s ease; }
+  .row:last-child { border-bottom: 1px solid var(--line); }
+  .row:hover { background: var(--wine); color: var(--on-wine); }
+  .row .row-in { transition: padding .35s ease; }
+  .row:hover .row-in { padding-left: 1rem; padding-right: 1rem; }
+  .row .desc { opacity: .78; }
+
+  /* ===== Filtros ===== */
+  .chip {
+    font-family: var(--f-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    padding: .6rem 1.1rem; border: 1px solid var(--line); border-radius: 999px; background: transparent;
+    color: var(--fg); cursor: pointer; transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .chip:hover { border-color: var(--fg); }
+  .chip[aria-pressed="true"] { background: var(--wine); color: var(--on-wine); border-color: var(--wine); }
+
+  /* ===== Cards ===== */
+  .grid-work { display: grid; grid-template-columns: 1fr; gap: 3.5rem 2rem; }
+  @media (min-width: 900px) {
+    .grid-work { grid-template-columns: 1fr 1fr; gap: 5rem 3rem; }
+    .card.offset { margin-top: 6rem; }
+  }
+  .card { display: block; min-width: 0; }
+  .cover { position: relative; aspect-ratio: 5 / 4; max-width: 100%; overflow: hidden; background: var(--surface); }
+  .cover svg, .cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .9s cubic-bezier(.2, .7, .2, 1), filter .5s ease; }
+  .card:hover .cover svg, .card:hover .cover img { transform: scale(1.06); }
+  .cover::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s ease;
+    background: linear-gradient(to top, rgba(79, 16, 16, .55), rgba(79, 16, 16, 0) 60%);
+  }
+  .card:hover .cover::after, .card:focus-visible .cover::after { opacity: 1; }
+  .cover .tag-prov {
+    position: absolute; left: 12px; top: 12px; z-index: 1; font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; padding: 4px 8px; background: rgba(17, 38, 28, .78); color: var(--on-forest);
+  }
+  .card .ttl { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size .5s ease; padding-bottom: 4px; display: inline; }
+  .card:hover .ttl, .card:focus-visible .ttl { background-size: 100% 2px; }
+  .pill { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; }
+
+  .quote { border-top: 1px solid var(--line); padding-top: 1.5rem; }
+
+  .fab {
+    position: fixed; z-index: 40;
+    right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    transition: opacity .3s ease, transform .3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+  }
+  .fab[data-hidden="true"] { opacity: 0; transform: translateY(12px); pointer-events: none; }
+
+  /* ===== Cursor customizado (só em dispositivos com mouse) ===== */
+  .cur { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; opacity: 0; transition: opacity .25s ease; display: none; }
+  @media (hover: hover) and (pointer: fine) { .cur { display: block; } }
+  .cur.on { opacity: 1; }
+  html.has-cursor, html.has-cursor * { cursor: none !important; }
+  .cur-ring, .cur-dot { position: fixed; left: 0; top: 0; pointer-events: none; mix-blend-mode: difference; will-change: transform; }
+  .cur-ring i {
+    position: absolute; left: 0; top: 0; width: 38px; height: 38px; transform: translate(-50%, -50%);
+    border: 1.5px solid #fff; border-radius: 50%; display: grid; place-items: center;
+    transition: width .4s cubic-bezier(.2, .8, .2, 1), height .4s cubic-bezier(.2, .8, .2, 1), background-color .3s ease, border-color .3s ease, transform .2s ease;
+  }
+  .cur-dot i { position: absolute; left: 0; top: 0; width: 6px; height: 6px; transform: translate(-50%, -50%); border-radius: 50%; background: #fff; transition: opacity .2s ease; }
+  .cur-lab { font-family: var(--f-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; color: var(--wine); opacity: 0; transition: opacity .25s ease; }
+  .cur[data-state="link"] .cur-ring i { width: 68px; height: 68px; background: #fff; border-color: transparent; }
+  .cur[data-state="link"] .cur-dot i { opacity: 0; }
+  .cur[data-state="name"] .cur-ring i { width: 96px; height: 96px; border-width: 1px; }
+  .cur[data-state="view"] .cur-ring { mix-blend-mode: normal; }
+  .cur[data-state="view"] .cur-ring i { width: 112px; height: 112px; background: var(--on-wine); border-color: transparent; }
+  .cur[data-state="view"] .cur-lab { opacity: 1; }
+  .cur[data-state="view"] .cur-dot i { opacity: 0; }
+  .cur.press .cur-ring i { transform: translate(-50%, -50%) scale(.85); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .marquee-track, .fx > i { animation: none; }
+    * { transition-duration: .01ms !important; }
+  }
+</style>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="sec band-wine">
+  <!-- Formas e luzes de fundo -->
+  <div class="fx orb orb-rose" data-speed="-.22" style="width:52vw;height:52vw;left:-14vw;top:4%"><i style="--d:18s"></i></div>
+  <div class="fx orb orb-deep" data-speed=".18" style="width:46vw;height:46vw;right:-10vw;bottom:-8%"><i style="--d:22s"></i></div>
+  <div class="fx ring hidden md:block" data-speed="-.35" style="width:clamp(140px,16vw,260px);height:clamp(140px,16vw,260px);right:12%;top:18%;color:var(--on-wine)"><i style="--d:16s"></i></div>
+  <div class="fx blob hidden md:block" data-speed=".3" style="width:clamp(90px,10vw,170px);height:clamp(90px,10vw,170px);left:46%;bottom:14%;--blob:#11261C"><i style="--d:13s"></i></div>
+  <div class="fx spark hidden md:block" data-speed="-.5" style="width:44px;height:44px;left:8%;top:46%;color:var(--rose)"><i style="--d:9s">✦</i></div>
+
+  <div class="wrap pt-6 pb-10 md:pt-8 md:pb-16">
+    <header class="flex items-center justify-between gap-4 eyebrow">
+      <a href="#top" aria-label="Bella Design, início">BD ®</a>
+      <nav class="hidden md:flex gap-10" aria-label="Seções">
+        <a href="#sobre" class="hover:underline underline-offset-4">Sobre</a>
+        <a href="#especialidades" class="hover:underline underline-offset-4">Especialidades</a>
+        <a href="#portfolio" class="hover:underline underline-offset-4">Portfólio</a>
+        <a href="#contato" class="hover:underline underline-offset-4">Contato</a>
+      </nav>
+      <span>Brasília <time id="clock" class="tabular-nums">--:--</time></span>
+    </header>
+
+    <div class="mt-14 md:mt-24 flex items-end justify-between eyebrow" style="opacity:.8">
+      <span>Portfólio · 2026</span>
+      <span>Designer · Brasil</span>
+    </div>
+
+    <!-- Nome: o script divide em letras que reagem ao cursor. Sem JS, o texto abaixo aparece normalmente. -->
+    <h1 id="name" class="rname mt-3" data-rname>Bella Design</h1>
+
+    <div class="mt-10 md:mt-16 grid gap-10 lg:grid-cols-12 items-end">
+      <div class="lg:col-span-7 min-w-0">
+        <p class="serif text-[clamp(1.9rem,4.4vw,4rem)] leading-[1.05] max-w-[22ch]">
+          Marcas, editoriais e campanhas que dão <em>presença</em> a quem precisa ser lembrado.
+        </p>
+        <p class="mt-6 max-w-[48ch] opacity-80">
+          Dez anos de experiência em branding, identidade visual, design editorial, político e corporativo.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a href="#contato" class="btn btn-light">Vamos criar algo juntos <span class="arr" aria-hidden="true">↗</span></a>
+          <a href="#portfolio" class="btn btn-line" style="color:var(--on-wine)">Ver portfólio</a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 min-w-0 relative">
+        <figure class="photo hero-photo" style="aspect-ratio:4/5; max-height:660px; margin:0">
+          <img class="par" src="img/hero-portrait.jpg" alt="Retrato de Isabele apoiada na mão, sorrindo de leve" style="object-position:50% 38%" fetchpriority="high">
+        </figure>
+        <figure class="polaroid hidden lg:block hero-second" style="left:-16%;bottom:-7%;width:40%;margin:0;background:#F3ECE6;padding:8px 8px 8px;transform:rotate(-5deg)">
+          <div class="photo" style="aspect-ratio:3/4"><img class="par" src="img/hero-second.jpg" alt="Isabele sorrindo, de jaqueta preta, em frente a uma parede de pôsteres" style="object-position:50% 40%"></div>
+        </figure>
+        <p class="frame-note mt-4 opacity-80 flex justify-between"><span>Bella Design</span><span>Designer ®</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Faixa de projetos -->
+<div class="marquee" id="marquee" aria-hidden="true">
+  <div class="marquee-track font-display uppercase text-[clamp(1.4rem,3vw,2.4rem)]">
+    <div class="flex"><span>Zago Sushi</span><i>✦</i><span>Prata Digital Bank</span><i>✦</i><span>Solaris Estética</span><i>✦</i><span>Espaço Sonhar</span><i>✦</i><span>Prefeitura de Guaratinguetá</span><i>✦</i><span>Netinho de Paula</span><i>✦</i><span>Rayane Braga</span><i>✦</i><span>Fabio Palacio</span><i>✦</i><span>RPG: Uma Aventura na Biologia</span><i>✦</i></div>
+    <div class="flex"><span>Zago Sushi</span><i>✦</i><span>Prata Digital Bank</span><i>✦</i><span>Solaris Estética</span><i>✦</i><span>Espaço Sonhar</span><i>✦</i><span>Prefeitura de Guaratinguetá</span><i>✦</i><span>Netinho de Paula</span><i>✦</i><span>Rayane Braga</span><i>✦</i><span>Fabio Palacio</span><i>✦</i><span>RPG: Uma Aventura na Biologia</span><i>✦</i></div>
+  </div>
+</div>
+
+<!-- ============ SOBRE ============ -->
+<section id="sobre" class="sec py-20 md:py-32">
+  <div class="fx orb orb-wine" data-speed="-.2" style="width:50vw;height:50vw;right:-16vw;top:-6%"><i style="--d:20s"></i></div>
+  <div class="fx ring hidden md:block" data-speed=".3" style="width:clamp(120px,14vw,220px);height:clamp(120px,14vw,220px);left:40%;bottom:6%;color:var(--wine-ink)"><i style="--d:15s"></i></div>
+
+  <div class="wrap grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5 min-w-0 relative">
+      <figure class="photo reveal-photo" style="aspect-ratio:4/5; max-height:700px; margin:0">
+        <img class="par" src="img/about-main.jpg" alt="Isabele de óculos, em um ambiente com luz alaranjada" style="object-position:40% 45%" loading="lazy">
+      </figure>
+      <figure class="polaroid hidden lg:block" style="right:-14%;bottom:-8%;width:42%;margin:0;background:var(--bg);padding:8px;transform:rotate(4deg)">
+        <div class="photo reveal-photo" style="aspect-ratio:3/4"><img class="par" src="img/about-second.jpg" alt="Isabele em um selfie de perto, de moletom azul" style="object-position:50% 35%" loading="lazy"></div>
+      </figure>
+    </div>
+    <div class="lg:col-span-7 min-w-0 flex flex-col gap-10">
+      <p class="eyebrow ink reveal">Sobre</p>
+      <h2 class="serif text-[clamp(2rem,4.2vw,3.8rem)] leading-[1.08] reveal">
+        Sou a Isabele. Há <em>dez anos</em> transformo posicionamento em identidade visual que as pessoas reconhecem.
+      </h2>
+      <!-- Texto editável: ajuste com a história real da Isabele -->
+      <div class="grid gap-6 md:grid-cols-2 muted reveal">
+        <p>Atuo em quatro frentes: branding e identidade visual, design editorial, design político e design corporativo. De restaurantes e clínicas a campanhas eleitorais e órgãos públicos, o ponto de partida é sempre o mesmo: entender quem fala, para quem e em que momento.</p>
+        <p>O resultado é um sistema visual consistente, que funciona em uma revista, em um perfil de rede social e em uma fachada, sem perder o caráter de cada cliente.</p>
+      </div>
+      <dl class="grid grid-cols-3 gap-6 border-t border-line pt-8 reveal">
+        <div><dt class="eyebrow muted">Experiência</dt><dd class="font-display text-[clamp(2.6rem,6vw,5rem)] leading-none mt-2"><span data-count="10">10</span><span class="text-[.4em] ml-1">anos</span></dd></div>
+        <div><dt class="eyebrow muted">Frentes</dt><dd class="font-display text-[clamp(2.6rem,6vw,5rem)] leading-none mt-2"><span data-count="4" data-pad="2">04</span></dd></div>
+        <div><dt class="eyebrow muted">Cases em destaque</dt><dd class="font-display text-[clamp(2.6rem,6vw,5rem)] leading-none mt-2"><span data-count="9" data-pad="2">09</span></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ESPECIALIDADES ============ -->
+<section id="especialidades" class="sec pb-20 md:pb-32">
+  <div class="wrap">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-12 reveal">
+      <h2 class="h-display text-[clamp(3rem,9vw,8rem)]">O que <span class="ink">eu faço</span></h2>
+      <p class="eyebrow muted">4 frentes de atuação</p>
+    </div>
+    <div>
+      <article class="row reveal">
+        <div class="row-in py-8 md:py-10 grid gap-4 md:grid-cols-12 items-baseline">
+          <h3 class="h-display text-[clamp(1.9rem,4vw,3.4rem)] md:col-span-5">Branding &amp; Identidade Visual</h3>
+          <p class="desc md:col-span-5 max-w-[52ch]">Nome, logotipo, paleta, tipografia e aplicações. Marcas que se sustentam do cartão de visita à fachada.</p>
+          <p class="eyebrow md:col-span-2 md:text-right">Logo · Sistema · Manual</p>
+        </div>
+      </article>
+      <article class="row reveal">
+        <div class="row-in py-8 md:py-10 grid gap-4 md:grid-cols-12 items-baseline">
+          <h3 class="h-display text-[clamp(1.9rem,4vw,3.4rem)] md:col-span-5">Design Editorial</h3>
+          <p class="desc md:col-span-5 max-w-[52ch]">Revistas, livros e materiais longos, com diagramação, hierarquia e ritmo de leitura pensados para quem vai ler.</p>
+          <p class="eyebrow md:col-span-2 md:text-right">Revista · Livro · Diagramação</p>
+        </div>
+      </article>
+      <article class="row reveal">
+        <div class="row-in py-8 md:py-10 grid gap-4 md:grid-cols-12 items-baseline">
+          <h3 class="h-display text-[clamp(1.9rem,4vw,3.4rem)] md:col-span-5">Design Político</h3>
+          <p class="desc md:col-span-5 max-w-[52ch]">Identidade e peças de campanha para candidatos e mandatos, com clareza de mensagem e consistência do impresso ao digital.</p>
+          <p class="eyebrow md:col-span-2 md:text-right">Campanha · Mandato · Digital</p>
+        </div>
+      </article>
+      <article class="row reveal">
+        <div class="row-in py-8 md:py-10 grid gap-4 md:grid-cols-12 items-baseline">
+          <h3 class="h-display text-[clamp(1.9rem,4vw,3.4rem)] md:col-span-5">Design Corporativo</h3>
+          <p class="desc md:col-span-5 max-w-[52ch]">Comunicação institucional para empresas e órgãos públicos: marca, materiais e padrões visuais que a equipe consegue manter.</p>
+          <p class="eyebrow md:col-span-2 md:text-right">Institucional · Digital · Padrões</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTFÓLIO ============ -->
+<section id="portfolio" class="sec py-20 md:py-32" style="background:var(--surface)">
+  <div class="fx orb orb-wine" data-speed="-.25" style="width:44vw;height:44vw;left:-14vw;top:12%"><i style="--d:19s"></i></div>
+  <div class="fx orb orb-green" data-speed=".2" style="width:40vw;height:40vw;right:-12vw;bottom:6%"><i style="--d:23s"></i></div>
+  <div class="wrap">
+    <div class="flex flex-wrap items-end justify-between gap-6 reveal">
+      <h2 class="h-display text-[clamp(3rem,9vw,8rem)]">Portfólio</h2>
+      <p class="eyebrow muted" id="count" aria-live="polite">9 projetos</p>
+    </div>
+
+    <div class="mt-10 mb-14 flex flex-wrap gap-2 reveal" role="group" aria-label="Filtrar projetos por categoria" id="filters"></div>
+
+    <div class="grid-work" id="grid"></div>
+    <noscript>
+      <ul>
+        <li><a href="https://www.behance.net/gallery/178060809/Restaurante-Zago-Sushi">Zago Sushi</a></li>
+        <li><a href="https://www.behance.net/gallery/200900381/Revista-Fabio-Palacio-Pr-Candidato-a-Prefeito-SCS">Revista Fabio Palacio</a></li>
+        <li><a href="https://www.behance.net/gallery/211009413/Vereadora-Rayane-Braga-Eleicoes-Municipais-2024">Vereadora Rayane Braga</a></li>
+        <li><a href="https://www.behance.net/gallery/212211577/RPG-UMA-AVENTURA-NA-BIOLOGIA-Livro-do-Jogador">RPG: Uma Aventura na Biologia</a></li>
+        <li><a href="https://www.behance.net/gallery/221808221/Prata-Digital-Bank">Prata Digital Bank</a></li>
+        <li><a href="https://www.behance.net/gallery/225782847/Projeto-Prefeitura-Guaratingueta">Prefeitura de Guaratinguetá</a></li>
+        <li><a href="https://www.behance.net/gallery/231946441/Identidade-Visual-Solaris-Esttica">Solaris Estética</a></li>
+        <li><a href="https://www.behance.net/gallery/234122895/Branding-Espaco-Sonhar-Fono-e-Psicologia-Infantil">Espaço Sonhar</a></li>
+        <li><a href="https://www.behance.net/gallery/254953601/Campanha-2026-Deputado-Federal-Netinho-de-Paula">Netinho de Paula</a></li>
+      </ul>
+    </noscript>
+  </div>
+</section>
+
+<!-- ============ DEPOIMENTOS ============ -->
+<section id="depoimentos" class="sec py-20 md:py-32">
+  <div class="wrap">
+    <div class="grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-4 min-w-0 reveal">
+        <p class="eyebrow ink">Depoimentos</p>
+        <h2 class="h-display text-[clamp(2.6rem,6vw,5rem)] mt-4">Quem já <span class="ink">trabalhou</span> com a Isabele</h2>
+      </div>
+      <!-- PLACEHOLDERS: troque pelos depoimentos reais, com autorização de cada cliente. -->
+      <div class="lg:col-span-8 min-w-0 grid gap-10 md:grid-cols-2">
+        <figure class="quote reveal">
+          <blockquote class="serif text-[clamp(1.4rem,2.2vw,1.9rem)] leading-snug">“[Depoimento do cliente: o que mudou na comunicação depois do projeto.]”</blockquote>
+          <figcaption class="mt-6 eyebrow muted">[Nome do cliente] · [Projeto]</figcaption>
+        </figure>
+        <figure class="quote reveal">
+          <blockquote class="serif text-[clamp(1.4rem,2.2vw,1.9rem)] leading-snug">“[Depoimento do cliente: como foi o processo e o resultado.]”</blockquote>
+          <figcaption class="mt-6 eyebrow muted">[Nome do cliente] · [Projeto]</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATO + RODAPÉ ============ -->
+<section id="contato" class="sec band-forest">
+  <div class="fx orb orb-moss" data-speed="-.2" style="width:50vw;height:50vw;left:-14vw;top:0"><i style="--d:21s"></i></div>
+  <div class="fx ring hidden md:block" data-speed=".3" style="width:clamp(140px,15vw,240px);height:clamp(140px,15vw,240px);right:6%;top:10%;color:var(--on-forest)"><i style="--d:17s"></i></div>
+
+  <div class="wrap pt-20 md:pt-32 pb-10">
+    <p class="eyebrow opacity-80 reveal">Tem um projeto em mente?</p>
+    <h2 class="h-display text-[clamp(3.2rem,11vw,10rem)] mt-6 reveal">Vamos criar algo <span class="lowercase italic" style="font-family:var(--f-serif);font-weight:400;color:var(--rose)">juntos</span></h2>
+
+    <div class="mt-14 grid gap-10 lg:grid-cols-12 items-end">
+      <div class="lg:col-span-7 min-w-0 reveal">
+        <p class="eyebrow opacity-70">E-mail</p>
+        <p class="mt-2 flex flex-wrap items-center gap-4">
+          <span id="email" class="font-serif text-[clamp(1.6rem,4vw,3rem)] break-all select-all">contato@seudominio.com</span>
+          <button id="copy" type="button" class="btn btn-line">Copiar</button>
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="mailto:contato@seudominio.com?subject=Projeto%20de%20design" class="btn btn-light">Escrever e-mail <span class="arr" aria-hidden="true">↗</span></a>
+          <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" class="btn btn-line">Behance <span class="arr" aria-hidden="true">↗</span></a>
+        </div>
+        <!-- Troque o e-mail acima e o href. Se houver WhatsApp, adicione um link https://wa.me/55DDDNUMERO -->
+      </div>
+      <div class="lg:col-span-5 min-w-0">
+        <figure class="photo reveal-photo" style="aspect-ratio:3/2; margin:0">
+          <img class="par" src="img/contact-wide.jpg" alt="Isabele sorrindo à luz do sol, de camisa esportiva" style="object-position:50% 35%" loading="lazy">
+        </figure>
+      </div>
+    </div>
+
+    <div class="mt-24 md:mt-32 flex flex-wrap items-center justify-between gap-4 eyebrow opacity-80">
+      <span>© 2026 Bella Design</span>
+      <span>Disponível para projetos em todo o Brasil</span>
+      <a href="#top" class="hover:underline underline-offset-4">Voltar ao topo ↑</a>
+    </div>
+  </div>
+  <!-- Mesmo componente do hero: ReactiveName() aplica a animação nos dois -->
+  <div class="wrap pb-8" aria-hidden="true"><p id="fname" class="rname foot-name" data-rname>Bella Design</p></div>
+</section>
+
+<a href="#contato" id="fab" class="fab btn btn-light" style="background:var(--wine);color:var(--on-wine)" data-hidden="false">Vamos conversar <span class="arr" aria-hidden="true">↗</span></a>
+<div id="cur" class="cur" aria-hidden="true">
+  <div class="cur-ring"><i><span class="cur-lab"></span></i></div>
+  <div class="cur-dot"><i></i></div>
+</div>
+
+<script>
+(function () {
+  /* ====== CONFIGURAÇÃO ======
+     Capas do Behance: salve cada imagem em img/covers/<id>.jpg (ids: zago, revista, rayane, rpg, prata, guara, solaris, sonhar, netinho).
+     A página usa a capa se o arquivo existir; senão mostra a ilustração provisória. */
+  var CONFIG = { covers: {} };   // opcional: { zago: 'img/outro-nome.webp' }
+
+  var B = 'https://www.behance.net/gallery/';
+  var PROJECTS = [
+    { id: 'zago',   title: 'Zago Sushi',                    kind: 'Restaurante',                              cats: ['Identidade Visual', 'Branding'],  url: B + '178060809/Restaurante-Zago-Sushi' },
+    { id: 'revista',title: 'Revista Fabio Palacio',         kind: 'Revista · Candidato a Prefeito (SCS)',     cats: ['Editorial', 'Político'],          url: B + '200900381/Revista-Fabio-Palacio-Pr-Candidato-a-Prefeito-SCS' },
+    { id: 'rayane', title: 'Vereadora Rayane Braga',        kind: 'Campanha · Eleições municipais 2024',      cats: ['Político'],                       url: B + '211009413/Vereadora-Rayane-Braga-Eleicoes-Municipais-2024' },
+    { id: 'rpg',    title: 'RPG: Uma Aventura na Biologia', kind: 'Livro do Jogador',                         cats: ['Editorial'],                      url: B + '212211577/RPG-UMA-AVENTURA-NA-BIOLOGIA-Livro-do-Jogador' },
+    { id: 'prata',  title: 'Prata Digital Bank',            kind: 'Banco digital',                            cats: ['Branding', 'Corporativo'],        url: B + '221808221/Prata-Digital-Bank' },
+    { id: 'guara',  title: 'Prefeitura de Guaratinguetá',   kind: 'Projeto institucional',                    cats: ['Corporativo', 'Político'],        url: B + '225782847/Projeto-Prefeitura-Guaratingueta' },
+    { id: 'solaris',title: 'Solaris Estética',              kind: 'Identidade visual',                        cats: ['Identidade Visual', 'Branding'],  url: B + '231946441/Identidade-Visual-Solaris-Esttica' },
+    { id: 'sonhar', title: 'Espaço Sonhar',                 kind: 'Fonoaudiologia e Psicologia Infantil',     cats: ['Branding'],                       url: B + '234122895/Branding-Espaco-Sonhar-Fono-e-Psicologia-Infantil' },
+    { id: 'netinho',title: 'Netinho de Paula',              kind: 'Campanha 2026 · Deputado Federal',         cats: ['Político'],                       url: B + '254953601/Campanha-2026-Deputado-Federal-Netinho-de-Paula' }
+  ];
+  var FILTERS = ['Todos', 'Branding', 'Identidade Visual', 'Editorial', 'Político', 'Corporativo'];
+
+  /* Capas provisórias (ilustrações geométricas) */
+  var W = '#4F1010', F = '#11261C', P = '#E9E4DC';
+  var svg = function (inner) { return '<svg viewBox="0 0 500 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' + inner + '</svg>'; };
+  var rays = [0, 45, 90, 135, 180, 225, 270, 315].map(function (a) { return '<line x1="345" y1="200" x2="385" y2="200" transform="rotate(' + a + ' 250 200)"/>'; }).join('');
+  var ART = {
+    zago: svg('<rect width="500" height="400" fill="' + F + '"/><circle cx="250" cy="200" r="130" fill="' + P + '"/><circle cx="250" cy="200" r="92" fill="' + F + '"/><circle cx="250" cy="200" r="52" fill="' + W + '"/><rect y="372" width="500" height="28" fill="' + W + '"/>'),
+    revista: svg('<rect width="500" height="400" fill="' + W + '"/><g transform="rotate(-8 250 200)"><rect x="145" y="65" width="200" height="270" fill="' + F + '"/></g><g transform="rotate(5 250 200)"><rect x="155" y="60" width="200" height="270" fill="' + P + '"/><rect x="180" y="95" width="90" height="14" fill="' + W + '"/><rect x="180" y="125" width="140" height="6" fill="' + F + '"/><rect x="180" y="141" width="120" height="6" fill="' + F + '"/><rect x="180" y="157" width="140" height="6" fill="' + F + '"/></g>'),
+    rayane: svg('<rect width="500" height="400" fill="' + P + '"/><path d="M90 340 A160 160 0 0 1 410 340 Z" fill="' + W + '"/><rect x="90" y="340" width="320" height="26" fill="' + F + '"/><text x="40" y="96" font-family="Anton, Impact, sans-serif" font-size="68" fill="' + F + '">2024</text>'),
+    rpg: svg('<rect width="500" height="400" fill="#1F4030"/><rect x="150" y="100" width="200" height="200" rx="36" fill="' + P + '" transform="rotate(-8 250 200)"/><g fill="' + W + '" transform="rotate(-8 250 200)"><circle cx="200" cy="150" r="16"/><circle cx="300" cy="150" r="16"/><circle cx="250" cy="200" r="16"/><circle cx="200" cy="250" r="16"/><circle cx="300" cy="250" r="16"/></g>'),
+    prata: svg('<rect width="500" height="400" fill="#C7CDC9"/><circle cx="250" cy="200" r="142" fill="none" stroke="' + F + '" stroke-width="3"/><circle cx="250" cy="200" r="112" fill="' + F + '"/><text x="250" y="256" text-anchor="middle" font-family="Anton, Impact, sans-serif" font-size="150" fill="' + P + '">P</text>'),
+    guara: svg('<rect width="500" height="400" fill="#7A2B2B"/><polygon points="120,160 250,80 380,160" fill="' + P + '"/><g fill="' + P + '"><rect x="145" y="178" width="30" height="130"/><rect x="205" y="178" width="30" height="130"/><rect x="265" y="178" width="30" height="130"/><rect x="325" y="178" width="30" height="130"/></g><rect x="115" y="318" width="270" height="16" fill="' + P + '"/>'),
+    solaris: svg('<rect width="500" height="400" fill="' + P + '"/><circle cx="250" cy="200" r="70" fill="' + W + '"/><g stroke="' + W + '" stroke-width="8" stroke-linecap="round">' + rays + '</g>'),
+    sonhar: svg('<rect width="500" height="400" fill="#A9B8A8"/><circle cx="230" cy="200" r="95" fill="' + F + '"/><circle cx="268" cy="182" r="84" fill="#A9B8A8"/><g fill="' + F + '"><circle cx="360" cy="110" r="7"/><circle cx="392" cy="180" r="5"/><circle cx="130" cy="105" r="6"/><circle cx="145" cy="305" r="5"/><circle cx="350" cy="300" r="6"/></g>'),
+    netinho: svg('<rect width="500" height="400" fill="' + F + '"/><rect y="300" width="500" height="100" fill="' + W + '"/><text x="250" y="320" text-anchor="middle" font-family="Anton, Impact, sans-serif" font-size="280" fill="' + P + '">26</text>')
+  };
+
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var hasGsap = !!window.gsap && !reduce;
+  var hasST = hasGsap && !!window.ScrollTrigger;
+  if (hasST) gsap.registerPlugin(ScrollTrigger);
+
+  /* ============ Portfólio ============ */
+  var grid = document.getElementById('grid');
+  var filters = document.getElementById('filters');
+  var count = document.getElementById('count');
+  var active = 'Todos';
+
+  grid.innerHTML = PROJECTS.map(function (p) {
+    return '<a class="card" data-id="' + p.id + '" href="' + p.url + '" target="_blank" rel="noopener noreferrer" data-cats="' + p.cats.join('|') + '">' +
+      '<div class="cover">' + ART[p.id] + '<span class="tag-prov">Capa provisória</span></div>' +
+      '<div class="mt-5 flex items-start justify-between gap-4"><div class="min-w-0">' +
+      '<h3 class="h-display text-[clamp(1.6rem,2.6vw,2.4rem)]"><span class="ttl">' + p.title + '</span></h3>' +
+      '<p class="muted mt-1">' + p.kind + '</p></div>' +
+      '<div class="flex flex-wrap gap-2 justify-end">' + p.cats.map(function (c) { return '<span class="pill">' + c + '</span>'; }).join('') + '</div></div>' +
+      '<span class="sr-only">Abrir no Behance (nova aba)</span></a>';
+  }).join('');
+
+  /* Troca a ilustração pela capa real quando o arquivo existe (tenta jpg, png, webp e jpeg) */
+  PROJECTS.forEach(function (p) {
+    var exts = ['jpg', 'png', 'webp', 'jpeg'];
+    var list = CONFIG.covers[p.id] ? [CONFIG.covers[p.id]] : exts.map(function (e) { return 'img/covers/' + p.id + '.' + e; });
+    (function tryNext(i) {
+      if (i >= list.length) return;
+      var probe = new Image();
+      probe.onload = function () {
+        var cover = grid.querySelector('.card[data-id="' + p.id + '"] .cover');
+        if (cover) cover.innerHTML = '<img src="' + list[i] + '" alt="Capa do projeto ' + p.title + '" loading="lazy">';
+      };
+      probe.onerror = function () { tryNext(i + 1); };
+      probe.src = list[i];
+    })(0);
+  });
+
+  filters.innerHTML = FILTERS.map(function (f) {
+    return '<button type="button" class="chip" aria-pressed="' + (f === active) + '" data-f="' + f + '">' + f + '</button>';
+  }).join('');
+
+  function applyFilter(f, first) {
+    active = f;
+    var shown = [];
+    grid.querySelectorAll('.card').forEach(function (c) {
+      var ok = f === 'Todos' || c.getAttribute('data-cats').split('|').indexOf(f) > -1;
+      c.hidden = !ok;
+      c.classList.remove('offset');
+      if (ok) shown.push(c);
+    });
+    shown.forEach(function (c, i) { if (i % 2 === 1) c.classList.add('offset'); });
+    filters.querySelectorAll('.chip').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === f)); });
+    count.textContent = shown.length + (shown.length === 1 ? ' projeto' : ' projetos');
+    if (hasGsap && !first) { gsap.from(shown, { y: 24, duration: .6, ease: 'power3.out', stagger: .05, clearProps: 'transform' }); }
+  }
+  filters.addEventListener('click', function (e) {
+    var b = e.target.closest('.chip');
+    if (b) applyFilter(b.getAttribute('data-f'));
+  });
+  applyFilter('Todos', true);
+
+  /* ============ Relógio ============ */
+  var clock = document.getElementById('clock');
+  var fmt = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
+  function tick() { clock.textContent = fmt.format(new Date()); }
+  tick(); setInterval(tick, 30000);
+
+  /* ============ Copiar e-mail ============ */
+  var copy = document.getElementById('copy');
+  var emailEl = document.getElementById('email');
+  copy.addEventListener('click', function () {
+    function ok() { copy.textContent = 'Copiado'; setTimeout(function () { copy.textContent = 'Copiar'; }, 1800); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(emailEl);
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      copy.textContent = 'Selecionado';
+    }
+    try { navigator.clipboard.writeText(emailEl.textContent.trim()).then(ok, fallback); } catch (e) { fallback(); }
+  });
+
+  /* ============ Botão flutuante ============ */
+  var fab = document.getElementById('fab');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { fab.setAttribute('data-hidden', String(en[0].isIntersecting)); }, { threshold: .15 })
+      .observe(document.getElementById('contato'));
+  }
+
+  /* ============ NOME REATIVO AO CURSOR (componente único: hero e rodapé) ============
+     Cada letra é repelida pelo cursor, estica, inclina e muda de cor conforme a proximidade;
+     o bloco inteiro ainda faz uma inclinação 3D sutil em direção ao ponteiro.
+     Um requestAnimationFrame por instância, ativo só enquanto há movimento e a instância está na tela. */
+  var ptr = { x: -9999, y: -9999, on: false };
+  var instances = [];
+  var ambient = !finePointer && !reduce;
+
+  function ReactiveName(el) {
+    var text = el.textContent.trim(), chars = [], raf = 0, visible = true;
+    var ecx = 0, ecy = 0, rx = 0, ry = 0;
+    el.setAttribute('aria-label', text);
+    el.textContent = '';
+    text.split('').forEach(function (ch) {
+      var o = document.createElement('span');
+      o.className = 'ch'; o.setAttribute('aria-hidden', 'true');
+      if (ch === ' ') { o.className += ' sp'; o.innerHTML = '&nbsp;'; }
+      else {
+        var i = document.createElement('span'); i.className = 'ci'; i.textContent = ch; o.appendChild(i);
+        chars.push({ el: o, x: 0, y: 0, sk: 0, sy: 1, p: 0, cx: 0, cy: 0, h: 0 });
+      }
+      el.appendChild(o);
+    });
+
+    function measure() {
+      el.style.transform = '';
+      chars.forEach(function (c) { c.el.style.transform = ''; });
+      var sx = window.scrollX, sy = window.scrollY, er = el.getBoundingClientRect();
+      ecx = er.left + er.width / 2 + sx; ecy = er.top + er.height / 2 + sy;
+      chars.forEach(function (c) {
+        var r = c.el.getBoundingClientRect();
+        c.cx = r.left + r.width / 2 + sx; c.cy = r.top + r.height / 2 + sy; c.h = r.height;
+      });
+      rx = ry = 0;
+      kick();
+    }
+
+    function frame(t) {
+      raf = 0;
+      var R = Math.max(170, (chars[0] ? chars[0].h : 200) * .95);
+      var mx = ptr.x + window.scrollX, my = ptr.y + window.scrollY;
+      var moving = false;
+
+      /* inclinação 3D do bloco */
+      var trx = 0, tryy = 0;
+      if (ptr.on) {
+        var nx = Math.max(-1, Math.min(1, (mx - ecx) / (window.innerWidth * .5)));
+        var ny = Math.max(-1, Math.min(1, (my - ecy) / (window.innerHeight * .5)));
+        tryy = nx * 6; trx = -ny * 4;
+      }
+      rx += (trx - rx) * .1; ry += (tryy - ry) * .1;
+      if (Math.abs(trx - rx) > .01 || Math.abs(tryy - ry) > .01) moving = true;
+      el.style.transform = 'perspective(1100px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+
+      /* letras */
+      chars.forEach(function (c, i) {
+        var tx = 0, ty = 0, tsk = 0, tsy = 1, tp = 0;
+        if (ptr.on) {
+          var dx = c.cx - mx, dy = c.cy - my, d = Math.hypot(dx, dy) || 1;
+          var f = Math.max(0, 1 - d / R); f = f * f * (3 - 2 * f);
+          tx = dx / d * f * R * .34;
+          ty = dy / d * f * R * .22;
+          tsk = Math.max(-1, Math.min(1, -dx / R)) * 14 * f;
+          tsy = 1 + f * .22;
+          tp = f;
+        }
+        if (ambient) { ty += Math.sin(t / 900 + i * .55) * 5; }
+        c.x += (tx - c.x) * .16; c.y += (ty - c.y) * .16;
+        c.sk += (tsk - c.sk) * .16; c.sy += (tsy - c.sy) * .16; c.p += (tp - c.p) * .16;
+        if (Math.abs(tx - c.x) > .05 || Math.abs(ty - c.y) > .05 || Math.abs(tsy - c.sy) > .002) moving = true;
+        c.el.style.transform = 'translate3d(' + c.x.toFixed(2) + 'px,' + c.y.toFixed(2) + 'px,0) skewX(' + c.sk.toFixed(2) + 'deg) scaleY(' + c.sy.toFixed(3) + ')';
+        c.el.style.setProperty('--p', c.p.toFixed(3));
+      });
+      if ((moving || ambient) && visible) raf = requestAnimationFrame(frame);
+    }
+    function kick() { if (!raf && visible && !reduce) raf = requestAnimationFrame(frame); }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) kick(); }, { rootMargin: '200px' }).observe(el);
+    }
+    var api = { measure: measure, kick: kick };
+    instances.push(api);
+    measure();
+    return api;
+  }
+
+  if (!reduce) {
+    document.querySelectorAll('[data-rname]').forEach(ReactiveName);
+    var kickAll = function () { instances.forEach(function (n) { n.kick(); }); };
+    var measureAll = function () { instances.forEach(function (n) { n.measure(); }); };
+    window.addEventListener('pointermove', function (e) { ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true; kickAll(); }, { passive: true });
+    window.addEventListener('pointerup', function (e) { if (e.pointerType === 'touch') { ptr.on = false; kickAll(); } }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', function () { ptr.on = false; kickAll(); });
+    window.addEventListener('scroll', kickAll, { passive: true });
+    window.addEventListener('resize', measureAll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureAll);
+    window.addEventListener('load', measureAll);
+  }
+
+  /* ============ Animações de entrada e scroll ============ */
+  if (hasGsap) {
+    /* Entrada do nome: anima o span interno para não competir com o efeito do cursor */
+    gsap.from('#name .ci', { yPercent: 55, duration: 1.1, ease: 'power4.out', stagger: .045 });
+    gsap.from('.hero-photo', { clipPath: 'inset(0 0 100% 0)', duration: 1.3, ease: 'power4.inOut', delay: .15 });
+    gsap.from('.hero-second', { y: 60, rotate: -12, duration: 1.2, ease: 'power3.out', delay: .5 });
+  }
+
+  if (hasST) {
+    /* Entrada do nome do rodapé (mesma coreografia do hero) */
+    gsap.from('#fname .ci', { yPercent: 55, duration: 1.1, ease: 'power4.out', stagger: .045, scrollTrigger: { trigger: '#fname', start: 'top 98%', once: true } });
+
+    /* Revelações suaves (apenas deslocamento, o conteúdo nunca fica escondido) */
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      if (el.getBoundingClientRect().top > innerHeight) {
+        gsap.from(el, { y: 40, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%', once: true } });
+      }
+    });
+
+    /* Fotos: máscara que abre + paralaxe interna */
+    document.querySelectorAll('.reveal-photo').forEach(function (el) {
+      gsap.from(el, { clipPath: 'inset(0 0 100% 0)', duration: 1.2, ease: 'power4.inOut', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+    });
+    document.querySelectorAll('.photo').forEach(function (ph) {
+      var img = ph.querySelector('img.par');
+      if (!img) return;
+      gsap.fromTo(img, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: ph, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+
+    /* Formas e luzes flutuantes: paralaxe com velocidades diferentes */
+    document.querySelectorAll('.fx[data-speed]').forEach(function (el) {
+      var s = parseFloat(el.getAttribute('data-speed'));
+      gsap.to(el, { y: s * 320, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: .6 } });
+    });
+
+    /* Contadores */
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var end = parseInt(el.getAttribute('data-count'), 10), pad = parseInt(el.getAttribute('data-pad') || '0', 10);
+      var o = { v: 0 };
+      gsap.to(o, { v: end, duration: 1.6, ease: 'power2.out', snap: { v: 1 },
+        onUpdate: function () { var s = String(o.v); while (s.length < pad) s = '0' + s; el.textContent = s; },
+        scrollTrigger: { trigger: el, start: 'top 92%', once: true } });
+    });
+
+    /* Faixa de projetos: a velocidade e o sentido seguem o scroll */
+    var mq = document.getElementById('marquee');
+    var track = mq.querySelector('.marquee-track');
+    mq.classList.add('js');
+    var tw = gsap.to(track, { xPercent: -50, ease: 'none', duration: 38, repeat: -1 });
+    ScrollTrigger.create({
+      onUpdate: function (self) {
+        var v = Math.min(Math.abs(self.getVelocity()) / 220, 7);
+        tw.timeScale((self.direction || 1) * (1 + v));
+      }
+    });
+    gsap.ticker.add(function () {
+      var ts = tw.timeScale(), target = ts < 0 ? -1 : 1;
+      if (Math.abs(ts - target) > .01) tw.timeScale(ts + (target - ts) * .06);
+    });
+  }
+
+  /* ============ CURSOR CUSTOMIZADO ============
+     Anel com rastro suave + ponto exato. Estados: padrão, link/botão (anel cheio), nome (anel grande),
+     card do portfólio (círculo com o texto "Ver projeto"). Só ativa com mouse; o cursor do sistema
+     é escondido apenas depois do primeiro movimento. */
+  if (finePointer) {
+    var cur = document.getElementById('cur');
+    var ring = cur.querySelector('.cur-ring'), dot = cur.querySelector('.cur-dot'), lab = cur.querySelector('.cur-lab');
+    var rx2 = 0, ry2 = 0, mx2 = 0, my2 = 0, craf = 0, shown = false;
+    var follow = reduce ? 1 : .18;
+    var cloop = function () {
+      rx2 += (mx2 - rx2) * follow; ry2 += (my2 - ry2) * follow;
+      ring.style.transform = 'translate3d(' + rx2.toFixed(1) + 'px,' + ry2.toFixed(1) + 'px,0)';
+      dot.style.transform = 'translate3d(' + mx2 + 'px,' + my2 + 'px,0)';
+      craf = (Math.abs(mx2 - rx2) > .1 || Math.abs(my2 - ry2) > .1) ? requestAnimationFrame(cloop) : 0;
+    };
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      mx2 = e.clientX; my2 = e.clientY;
+      if (!shown) { shown = true; rx2 = mx2; ry2 = my2; document.documentElement.classList.add('has-cursor'); }
+      cur.classList.add('on');
+      if (!craf) craf = requestAnimationFrame(cloop);
+    }, { passive: true });
+    document.addEventListener('pointerover', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var card = t.closest('.card'), link = t.closest('a, button, .chip, [data-cursor]'), nm = t.closest('[data-rname]');
+      var state = '', label = '';
+      if (card) { state = 'view'; label = card.getAttribute('data-cursor-label') || 'Ver projeto'; }
+      else if (link) { state = 'link'; }
+      else if (nm) { state = 'name'; }
+      cur.setAttribute('data-state', state);
+      lab.textContent = label;
+    });
+    document.addEventListener('pointerdown', function () { cur.classList.add('press'); });
+    document.addEventListener('pointerup', function () { cur.classList.remove('press'); });
+    document.documentElement.addEventListener('pointerleave', function () { cur.classList.remove('on'); });
+    document.documentElement.addEventListener('pointerenter', function () { if (shown) cur.classList.add('on'); });
+  }
+})();
+</script>
